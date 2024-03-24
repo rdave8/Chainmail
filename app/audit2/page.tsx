@@ -68,7 +68,7 @@ const AuditReport: React.FC = () => {
               <p>Replace the now keyword with block.timestamp, and consider implications of miner-controlled timestamp manipulation.</p>
               <p>Secure the CashOut function against reentrancy attacks by updating the contract's state before calling external contracts.</p>
             </div>
-            <a href="https://sepolia.arbiscan.io/token/0xc5d06666509f1010b77500c92fc9a1d4324c7964#code" className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4 lg:mr-20">
+            <a href="https://sepolia.arbiscan.io/token/0xc5d06666509f1010b77500c92fc9a1d4324c7964?a=1#code" className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4 lg:mr-20">
               View Token
             </a>
 
