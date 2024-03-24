@@ -23,15 +23,16 @@ const sectionStyle = {
 };
 
 const Section: React.FC<SectionProps> = ({ title, children }) => (
-  <section className="border border-gray-300 p-5 rounded-lg shadow-sm my-4 flex-1 w-full box-border hover:border-2 hover:border-purple-200">
+  <section className="bg-black border border-gray-300 p-5 rounded-lg shadow-sm my-4 flex-1 w-full box-border hover:border-2 hover:border-purple-200">
     <h2>{title}</h2>
     {children}
   </section>
 );
 
 
+
 const CodeContainer: React.FC = () => (
-  <div className="bg-gray-100 p-5 rounded-lg shadow-sm my-4 flex-1 w-full box-border h-full hover:border-2 hover:border-purple-200">
+  <div className="bg-gray-700 p-5 rounded-lg shadow-sm my-4 flex-1 w-full box-border h-full hover:border-2 hover:border-purple-200">
     {/* Empty container for code */}
   </div>
 );
@@ -42,7 +43,11 @@ const quadrantLayoutStyle: React.CSSProperties = {
   flexDirection: 'column',
   flexWrap: 'wrap',
   padding: '40px', // Add padding around the entire container
+  backgroundImage: `url('/stars2.jpeg')`, // Add this line
+  backgroundSize: 'cover', // Ensure the background covers the whole area
+  backgroundPosition: 'center', // Center the background image
 };
+
 
 
 
