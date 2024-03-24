@@ -6,8 +6,11 @@ export default function Navbar() {
       <div className="flex items-center">
         <Link href="/" className="text-white font-bold text-xl">Aegisteel</Link>
       </div>
+      <Link href="/audit" passHref>
+        <button type="button">Go to Audit Page</button>
+      </Link>
       <div className="flex items-center">
-        <button className="bg-orange-600 text-white font-bold py-2 px-4 rounded">
+        <button className="bg-purple-600 text-white font-bold py-2 px-4 rounded">
           Login with Metamask
         </button>
       </div>
