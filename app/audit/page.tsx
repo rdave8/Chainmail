@@ -22,17 +22,24 @@ const sectionStyle = {
   }
 };
 
+const CodeContainer: React.FC = () => (
+  <div className="bg-gray-100 p-5 rounded-lg shadow-sm my-2.5 flex-1 w-full box-border h-full">
+    {/* Empty container for code */}
+  </div>
+);
+
 
 const Section: React.FC<SectionProps> = ({ title, children }) => (
-  <section className="border border-gray-300 p-5 rounded-lg shadow-sm my-2.5 flex-1 w-1/2 box-border sm:w-full">
+  <section className="border border-gray-300 p-5 rounded-lg shadow-sm my-2.5 flex-1 w-full box-border">
     <h2>{title}</h2>
     {children}
   </section>
 );
 
+
 const quadrantLayoutStyle: React.CSSProperties = {
   display: 'flex',
-  flexDirection: 'row', 
+  flexDirection: 'column',
   flexWrap: 'wrap',
   // Other styles if needed
 };
@@ -46,16 +53,24 @@ export default function Audit() {
         <Section title="Strengths">
           <p>Details about system strengths...</p>
         </Section>
+        <CodeContainer />
+
         <Section title="Vulnerabilities">
           <p>Details about system vulnerabilities...</p>
         </Section>
+        <CodeContainer />
+
         <Section title="How to Fix">
           <p>Details on fixing vulnerabilities...</p>
         </Section>
+        <CodeContainer />
+
         <Section title="Suggestions for Increased Security">
           <p>Suggestions for enhancing security...</p>
         </Section>
+        <CodeContainer />
       </div>
     </main>
   );
 }
+
