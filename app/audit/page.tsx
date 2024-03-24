@@ -22,18 +22,18 @@ const sectionStyle = {
   }
 };
 
-const CodeContainer: React.FC = () => (
-  <div className="bg-gray-100 p-5 rounded-lg shadow-sm my-2.5 flex-1 w-full box-border h-full">
-    {/* Empty container for code */}
-  </div>
-);
-
-
 const Section: React.FC<SectionProps> = ({ title, children }) => (
-  <section className="border border-gray-300 p-5 rounded-lg shadow-sm my-2.5 flex-1 w-full box-border">
+  <section className="border border-gray-300 p-5 rounded-lg shadow-sm my-4 flex-1 w-full box-border hover:border-2 hover:border-purple-200">
     <h2>{title}</h2>
     {children}
   </section>
+);
+
+
+const CodeContainer: React.FC = () => (
+  <div className="bg-gray-100 p-5 rounded-lg shadow-sm my-4 flex-1 w-full box-border h-full hover:border-2 hover:border-purple-200">
+    {/* Empty container for code */}
+  </div>
 );
 
 
@@ -41,8 +41,9 @@ const quadrantLayoutStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   flexWrap: 'wrap',
-  // Other styles if needed
+  padding: '40px', // Add padding around the entire container
 };
+
 
 
 export default function Audit() {
@@ -69,8 +70,21 @@ export default function Audit() {
           <p>Suggestions for enhancing security...</p>
         </Section>
         <CodeContainer />
+
+        {/* Security Summary */}
+        <Section title="Security Summary">
+          <p>Summary of the security aspects...</p>
+        </Section>
+        <CodeContainer />
+
+        {/* Optimization Summary */}
+        <Section title="Optimization Summary">
+          <p>Summary of optimization strategies...</p>
+        </Section>
+        <CodeContainer />
       </div>
     </main>
   );
 }
+
 
