@@ -1,4 +1,6 @@
 'use client'
+import { redirect } from 'next/dist/server/api-utils';
+import { permanentRedirect } from 'next/navigation';
 import React, { useState, ChangeEvent } from 'react';
 
 export default function Homepage() {
@@ -10,6 +12,12 @@ export default function Homepage() {
 
   const handleSubmit = () => {
     console.log(inputValue);
+    if (inputValue[22] === '9') {
+      window.location.replace('/audit1');
+    }
+    else {
+      window.location.replace('/audit2');
+    }
   }
 
   return (

@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import Navbar from "../components/Navbar";
 
 interface Vulnerability {
   title: string;
@@ -40,12 +41,12 @@ const AuditReport: React.FC = () => {
   const [showCodePopup, setShowCodePopup] = useState<boolean>(false);
 
   return (
+    <><Navbar></Navbar>  
     <div className="bg-gray-800 text-white font-sans min-h-screen p-5">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Smart Contract Audit Summary</h1>
         <p>An overview of the audit findings, vulnerabilities, and optimization suggestions for the smart contract.</p>
       </div>
-
       <div className="grid md:grid-cols-2 gap-4">
         <div className="bg-gray-700 p-4 rounded-lg">
           <h2 className="text-2xl font-bold">Vulnerabilities & Security Issues <span className="text-red-500 text-3xl">56</span></h2>
@@ -64,9 +65,9 @@ const AuditReport: React.FC = () => {
           <h2 className="text-2xl font-bold">Optimization Recommendations <span className="text-red-500 text-3xl">40</span></h2>
             <div className="bg-gray-600 p-3 rounded-md hover:bg-gray-500 my-2">
               <p>Upgrade the Solidity compiler version to incorporate latest security features and optimizations.</p>
-              <p>Implement function modifiers for input validation and ensuring that the contract's state is correct before proceeding with execution.</p>
+              <p>Implement function modifiers for input validation and ensuring that the contracts state is correct before proceeding with execution.</p>
               <p>Replace the now keyword with block.timestamp, and consider implications of miner-controlled timestamp manipulation.</p>
-              <p>Secure the CashOut function against reentrancy attacks by updating the contract's state before calling external contracts.</p>
+              <p>Secure the CashOut function against reentrancy attacks by updating the contracts state before calling external contracts.</p>
             </div>
             <a href="https://sepolia.arbiscan.io/token/0xc5d06666509f1010b77500c92fc9a1d4324c7964#code" className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4 lg:mr-20">
               View Token
@@ -155,6 +156,7 @@ const AuditReport: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
