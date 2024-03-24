@@ -31,3 +31,21 @@ body {
     text-wrap: balance;
   }
 }
+.fade-in {
+  opacity: 0;
+  animation: fadeIn ease 2s;
+  -webkit-animation: fadeIn ease 2s;
+  -moz-animation: fadeIn ease 2s;
+  -o-animation: fadeIn ease 2s;
+  -ms-animation: fadeIn ease 2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+.fade-in-1 {animation-delay: 0.5s;}
+.fade-in-2 {animation-delay: 1s;}
+.fade-in-3 {animation-delay: 1.5s;}
