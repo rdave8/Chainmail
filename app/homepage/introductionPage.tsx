@@ -25,8 +25,8 @@ export default function Homepage() {
         The most advanced AI model to optimize smart contracts to date
       </p>
       <div className="flex flex-col items-center fade-in fade-in-3">
-        <textarea className="w-64 h-20 px-4 py-2 border-2 border-gray-300 bg-white text-black rounded-lg shadow-lg focus:outline-none focus:border-indigo-500 resize" placeholder="Enter your text here" onChange={handleChange}></textarea>
-        <button onClick={handleSubmit} className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded fade-in-4">Submit</button>
+        <textarea className="w-64 h-20 px-4 py-2 border-2 border-gray-300 bg-white text-black rounded-lg shadow-lg focus:outline-none focus:border-indigo-500 resize" placeholder="Enter the smart contract code here" onChange={handleChange}></textarea>
+        <button onClick={handleSubmit} className="mt-8 bg-purple-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded fade-in-4">Submit</button>
       </div>
     </div>
   </div>
