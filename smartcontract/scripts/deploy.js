@@ -12,7 +12,6 @@ async function main() {
     const address = await contract.getAddress();
 
     console.log(address);
-
   } catch (error) {
         console.error(error);
     process.exit(1);

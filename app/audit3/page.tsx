@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import Navbar from "../components/Navbar";
 
 interface Vulnerability {
   title: string;
@@ -9,25 +10,11 @@ interface Vulnerability {
 
 const vulnerabilities: Vulnerability[] = [
   {
-    title: 'Deprecated Function (suicide replaced by selfdestruct)',
-    description: 'The suicide(owner) function is deprecated and should be replaced with selfdestruct(owner) for self-destructing contracts.',
+    title: 'Approval and TransferFrom Mechanisms',
+    description: 'The contract includes an approveAndCall function, allowing tokens to be spent and notifying the contract in a single transaction. While this is a useful feature, its crucial to be aware of the potential for reentrancy attacks if interacting with untrusted contracts. It seems to handle calls securely by setting allowances before making external calls, minimizing the risk.',
    
   },
-  {
-    title: 'Use of address(0x0) for Token Purchases',
-    description: 'The buy() function transfers tokens from address(0x0), which could lead to confusion about token creation versus transfer semantics.',
-    
-  },
-  {
-    title: 'Lack of Checks in buy Function',
-    description: 'Theres no check for the msg.value in the buy() function, meaning tokens can be bought at any price (or for free if msg.value is 0), which could be exploited.',
-    
-  },
-  {
-    title: 'Potential for Denial of Service (DoS) via migrate_and_destroy',
-    description: 'This function can make the contract unusable without a proper migration path for token holders, potentially locking funds',
-
-  },
+  
   // Add other vulnerabilities as needed
 ];
 
@@ -40,15 +27,15 @@ const AuditReport: React.FC = () => {
   const [showCodePopup, setShowCodePopup] = useState<boolean>(false);
 
   return (
+    <><Navbar></Navbar>  
     <div className="bg-gray-800 text-white font-sans min-h-screen p-5">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Smart Contract Audit Summary</h1>
         <p>An overview of the audit findings, vulnerabilities, and optimization suggestions for the smart contract.</p>
       </div>
-
       <div className="grid md:grid-cols-2 gap-4">
         <div className="bg-gray-700 p-4 rounded-lg">
-          <h2 className="text-2xl font-bold">Vulnerabilities & Security Issues <span className="text-red-500 text-3xl">27</span></h2>
+          <h2 className="text-2xl font-bold">Vulnerabilities & Security Issues <span className="text-green-500 text-3xl">94</span></h2>
           {vulnerabilities.map((vul, index) => (
             <>
             <div key={index} className="bg-gray-600 p-3 rounded-md hover:bg-gray-500 my-2">
@@ -61,14 +48,12 @@ const AuditReport: React.FC = () => {
         </div>
 
         <div className="bg-gray-700 p-4 rounded-lg">
-          <h2 className="text-2xl font-bold">Optimization Recommendations <span className="text-red-500 text-3xl">31</span></h2>
+          <h2 className="text-2xl font-bold">Optimization Recommendations <span className="text-green-500 text-3xl">97</span></h2>
             <div className="bg-gray-600 p-3 rounded-md hover:bg-gray-500 my-2">
-              <p>Upgrading to a newer Solidity version can provide gas optimizations, better error messages, and more robust security features.</p>
-              <p>Refactoring functions to use less gas by minimizing state changes, optimizing loops, and using more efficient data types where possible.</p>
-              <p>To prevent overflow and underflow vulnerabilities, the contract should use SafeMath for all arithmetic operations.</p>
-              <p>Review and possibly consolidate event logs to emit more descriptive events while optimizing for gas costs.</p>
+              <p>Redundant SafeMath: Since Solidity ^0.8.0 includes overflow checks, the explicit use of SafeMath could be removed to optimize gas costs. Although it doesn't hurt security, it's not necessary and adds to the contract's complexity and deployment cost.</p>
+              <p>While useful, the ability to freeze accounts introduces centralization risk. This feature's necessity should be carefully weighed against the token's intended use case. Consideration for a decentralized governance model for such actions might be more favorable for community trust.</p>
             </div>
-            <a href="https://sepolia.arbiscan.io/token/0xc5d06666509f1010b77500c92fc9a1d4324c7964?a=0#code" className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4 lg:mr-20">
+            <a href="https://sepolia.arbiscan.io/token/0xc5d06666509f1010b77500c92fc9a1d4324c7964?a=2#inventory" className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4 lg:mr-20">
               View Token
             </a>
 
@@ -92,10 +77,10 @@ const AuditReport: React.FC = () => {
                       // SPDX-License-Identifier: MIT
                       pragma solidity ^0.8.0;
                       
-                      import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-                      
                       contract Owned {
                           address public owner;
+                      
+                          event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
                       
                           constructor() {
                               owner = msg.sender;
@@ -108,6 +93,7 @@ const AuditReport: React.FC = () => {
                       
                           function transferOwnership(address newOwner) public onlyOwner {
                               require(newOwner != address(0), "Invalid address");
+                              emit OwnershipTransferred(owner, newOwner);
                               owner = newOwner;
                           }
                       }
@@ -117,8 +103,6 @@ const AuditReport: React.FC = () => {
                       }
                       
                       contract TokenERC20 {
-                          using SafeMath for uint256;
-                      
                           string public name;
                           string public symbol;
                           uint8 public decimals = 18;
@@ -137,8 +121,10 @@ const AuditReport: React.FC = () => {
                       
                           function _transfer(address _from, address _to, uint256 _value) internal {
                               require(_to != address(0), "Transfer to the zero address");
-                              balanceOf[_from] = balanceOf[_from].sub(_value, "Insufficient balance");
-                              balanceOf[_to] = balanceOf[_to].add(_value);
+                              require(balanceOf[_from] >= _value, "Insufficient balance");
+                              require(balanceOf[_to] + _value >= balanceOf[_to], "Transfer amount overflows");
+                              balanceOf[_from] -= _value;
+                              balanceOf[_to] += _value;
                               emit Transfer(_from, _to, _value);
                           }
                       
@@ -148,7 +134,8 @@ const AuditReport: React.FC = () => {
                           }
                       
                           function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
-                              allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value, "Insufficient allowance");
+                              require(_value <= allowance[_from][msg.sender], "Insufficient allowance");
+                              allowance[_from][msg.sender] -= _value;
                               _transfer(_from, _to, _value);
                               return true;
                           }
@@ -176,9 +163,8 @@ const AuditReport: React.FC = () => {
                           constructor(string memory tokenName, string memory tokenSymbol) TokenERC20(tokenName, tokenSymbol) {}
                       
                           function _transfer(address _from, address _to, uint256 _value) internal override {
-                              require(_to != address(0), "Transfer to the zero address");
-                              require(!frozenAccount[_from], "Account is frozen");
-                              require(!frozenAccount[_to], "Account is frozen");
+                              require(!frozenAccount[_from], "Sender account is frozen");
+                              require(!frozenAccount[_to], "Recipient account is frozen");
                               super._transfer(_from, _to, _value);
                           }
                       
@@ -187,8 +173,9 @@ const AuditReport: React.FC = () => {
                               emit FrozenFunds(target, freeze);
                           }
                       
-                          // Additional functions such as 'mint', 'burn' could be added here
+                          // Additional functions such as 'mint', 'burn' could be added here to extend functionality further, ensuring to include proper access controls and emitting events where appropriate.
                       }
+                      
                       
                     `}
                   </code>
@@ -202,6 +189,7 @@ const AuditReport: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
