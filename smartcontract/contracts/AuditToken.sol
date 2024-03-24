@@ -10,7 +10,6 @@ contract AuditToken is ERC721 {
         string[] vulnerabilities;
         uint32 securityScore;
         uint32 gasScore;
-        uint32 timestamp;
     }
 
     mapping(uint256 => TokenMetadata) public tokenMetadata;
@@ -24,8 +23,7 @@ contract AuditToken is ERC721 {
         tokenMetadata[tokenCounter] = TokenMetadata({
             vulnerabilities: _vulnerabilities,
             securityScore: uint32(_securityScore),
-            gasScore: uint32(_gasScore),
-            timestamp: uint32(block.timestamp)
+            gasScore: uint32(_gasScore)
         });
         tokenCounter++;
         address tokenAddress = address(this);
