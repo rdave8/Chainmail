@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <nav className="bg-black p-4 flex justify-between items-center">
       <div className="flex items-center">
-        <Link href="/" className="text-white font-bold text-xl">Aegisteel</Link>
+        <Link href="/" className="text-white font-bold text-xl">Aegis</Link>
       </div>
       <Link href="/audit" passHref>
         <button type="button">Go to Audit Page</button>
